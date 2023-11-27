@@ -36,3 +36,86 @@
     transform: rotate(360deg);
   }
 }
+
+/* main css */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #111;
+  color: #fff;
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+
+
+h1{
+  color: #e50914;
+}
+
+.movie-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.movie-card {
+  width: 250px;
+  margin: 20px;
+  background-color: #333;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  color: #fff;
+  font-style: italic;
+  
+}
+
+.movie-card img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.movie-details {
+  padding: 10px;
+}
+
+.filter {
+  margin-bottom: 20px;
+}
+
+.add-movie-form {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #333;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  /* Adjusted text color */
+}
+
+.add-movie-form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.add-movie-form input,
+.add-movie-form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.add-movie-form button {
+  background-color: #e50914;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
