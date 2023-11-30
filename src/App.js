@@ -1,86 +1,171 @@
-import logo from './logo.svg';
-import './App.css';
-import React, { useState } from 'react';
-import MovieList from './component/MovieList';
-import Filter from './component/Filter';
-import movies from './component/moviesData'; // Import the movies array
+
+import "./App.css";
+import React, { useState } from "react";
+import MovieList from "./components/MovieList";
+import Filter from "./components/Filter";
+import House from '../src/images/House of cards.jpeg';
+import Ozark from "../src/images/ozark.jpeg";
+import Sense from "../src/images/sense.jpeg";
+import Alien from "../src/images/Alien.jpeg";
+import Murder from "../src/images/Murder.jpeg";
+import Sheldon from "../src/images/Sheldon.jpeg";
+import Peaky from "../src/images/Peaky.jpeg";
+import Code from "../src/images/code.jpeg";
+import fight from "../src/images/download.jpeg";
+import titanic from "../src/images/titanic.jpeg";
+
 const App = () => {
-  const [moviesData, setMoviesData] = useState(movies);
+  const [movies, setMovies] = useState([
+    {
+      title: "HOUSE OF CARDS",
+      description: "A mind-bending thriller.",
+      posterURL: House,
+      rating: 4.8,
+    },
+    {
+      title: "OZARK",
+      description: "A story of hope and perseverance.",
+      posterURL: Ozark,
+      rating: 4.9,
+    },
+    {
+      title: "Sense8",
+      description: "The Joker wreaks havoc in Gotham.",
+      posterURL: Sense,
+      rating: 4.7,
+    },
+    {
+      title: "The Alienist",
+      description: "Quentin Tarantino's masterpiece.",
+      posterURL: Alien,
+      rating: 4.6,
+    },
+    {
+      title: "How to Get away with Murderer ",
+      description: "A classic crime drama.",
+      posterURL: Murder,
+      rating: 4.9,
+    },
+    {
+      title: "Young Sheldon",
+      description: "Life is like a box of chocolates.",
+      posterURL: Sheldon,
+      rating: 4.5,
+    },
+    {
+      title: "Peaky Blinders",
+      description: "Welcome to the real world.",
+      posterURL: Peaky,
+      rating: 4.7,
+    },
+    {
+      title: "Criminal Code",
+      description: "A true story of humanity.",
+      posterURL: Code,
+      rating: 4.8,
+    },
+    {
+      title: "Fight Club",
+      description: "The first rule of Fight Club is...",
+      posterURL: fight,
+      rating: 4.5,
+    },
+    {
+      title: "Titanic",
+      description: "A tale of love and tragedy.",
+      posterURL: titanic,
+      rating: 4.6,
+    },
+  ]);
 
-  const [filteredMovies, setFilteredMovies] = useState(moviesData);
+  const [newMovie, setNewMovie] = useState({
+    title: "",
+    description: "",
+    posterURL: "",
+    rating: 0,
+  });
 
-  const handleFilterChange = (filters) => {
-    // Implement filtering logic based on title and rate filters
-    const filtered = movies.filter((movie) => {
-      const titleMatch = movie.title
-        .toLowerCase()
-        .includes(filters.title.toLowerCase());
-      const rateMatch =
-        filters.rating === "" || movie.rating >= parseInt(filters.rating);
-
-      return titleMatch && rateMatch;
-    });
-
-    setFilteredMovies(filtered);
+  const addMovie = () => {
+    if (
+      newMovie.title &&
+      newMovie.description &&
+      newMovie.posterURL &&
+      newMovie.rating
+    ) {
+      setMovies([...movies, newMovie]);
+      setNewMovie({
+        title: "",
+        description: "",
+        posterURL: "",
+        rating: 0,
+      });
+    } else {
+      alert("Please fill out all fields before adding a new movie.");
+    }
   };
 
-  const handleAddMovie = (newMovie) => {
-    setMoviesData((prevMovies) => [...prevMovies, { id: Date.now(), ...newMovie }]);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewMovie({
+      ...newMovie,
+      [name]: value,
+    });
+  };
+
+  const filterMovies = ({ title, rating }) => {
+    // Implement filtering logic based on title and rating
+    const filteredMovies = movies.filter((movie) => {
+      const titleMatch = movie.title
+        .toLowerCase()
+        .includes(title.toLowerCase());
+      const ratingMatch = rating === "" || movie.rating >= parseFloat(rating);
+
+      return titleMatch && ratingMatch;
+    });
+
+    setMovies(filteredMovies);
   };
 
   return (
     <div className="app">
       <h1>NETFLIX</h1>
-      <Filter onFilterChange={handleFilterChange} />
-      <MovieList movies={filteredMovies} />
-      <AddMovieForm onAddMovie={handleAddMovie} />
+      <Filter onFilter={filterMovies} />
+
+      <MovieList movies={movies} />
+
+      <div className="add-movie-form">
+        <input
+          type="text"
+          name="title"
+          placeholder="Title"
+          value={newMovie.title}
+          onChange={handleInputChange}
+        />
+        <input
+          type="text"
+          name="description"
+          placeholder="Description"
+          value={newMovie.description}
+          onChange={handleInputChange}
+        />
+        <input
+          type="text"
+          name="posterURL"
+          placeholder="Poster URL"
+          value={newMovie.posterURL}
+          onChange={handleInputChange}
+        />
+        <input
+          type="number"
+          name="rating"
+          placeholder="Rating"
+          value={newMovie.rating}
+          onChange={handleInputChange}
+        />
+        <button onClick={addMovie}>Add Movie</button>
+      </div>
     </div>
   );
 };
 
-const AddMovieForm = ({ onAddMovie }) => {
-  const [newMovie, setNewMovie] = useState({ title: '', description: '', rating: '', posterURL: '' });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewMovie((prevMovie) => ({ ...prevMovie, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Validate the new movie data 
-    if (newMovie.title && newMovie.rating && newMovie.posterURL) {
-      onAddMovie(newMovie);
-      setNewMovie({ title: '', description: '', rating: '', posterURL: '' });
-    }
-  };
-
-  return (
-    <form className="add-movie-form" onSubmit={handleSubmit}>
-      <h2>Add a New Movie</h2>
-      <label>
-        Title:
-        <input type="text" name="title" value={newMovie.title} onChange={handleChange} />
-      </label>
-      <label>
-        Description:
-        <textarea name="description" value={newMovie.description} onChange={handleChange} />
-      </label>
-      <label>
-        Rating:
-        <input type="number" name="rating" value={newMovie.rating} onChange={handleChange} />
-      </label>
-      <label>
-        Poster URL:
-        <input type="text" name="posterURL" value={newMovie.posterURL} onChange={handleChange} />
-      </label>
-      <button type="submit">Add Movie</button>
-    </form>
-  );
-};
-
 export default App;
-
-
-
-
